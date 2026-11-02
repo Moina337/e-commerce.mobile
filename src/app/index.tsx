@@ -1,44 +1,77 @@
+import { router } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SearchIcon } from '@/components/search-icon';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 
 const categories = [
-  { name: 'Mode', icon: '👗' },
-  { name: 'Tech', icon: '📱' },
-  { name: 'Maison', icon: '🛋️' },
-  { name: 'Beauté', icon: '💄' },
+  { name: 'Sneakers', icon: '👟' },
+  { name: 'Homme', icon: '🧍' },
+  { name: 'Femme', icon: '💃' },
   { name: 'Sport', icon: '🏃' },
+  { name: 'Classique', icon: '🕶️' },
+  { name: 'Sandales', icon: '🩴' },
+  { name: 'Boots', icon: '🥾' },
 ];
 
-const trendingProducts = [
+const trends = [
   {
-    name: 'Air Max Pro',
-    price: '€149',
-    tag: 'Nouveau',
+    brand: 'Nike',
+    name: 'Air Max',
+    price: '45 000 FCFA',
+    oldPrice: '55 000 FCFA',
+    tag: '-18%',
     image:
       'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
   },
   {
-    name: 'Montre Luxe',
-    price: '€249',
-    tag: 'Top vente',
+    brand: 'Adidas',
+    name: 'Ultraboost',
+    price: '52 000 FCFA',
+    oldPrice: '63 000 FCFA',
+    tag: '-20%',
     image:
-      'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=900&q=80',
   },
   {
-    name: 'Sac Juno',
-    price: '€189',
+    brand: 'New Balance',
+    name: '530 Legacy',
+    price: '48 000 FCFA',
+    oldPrice: '58 000 FCFA',
+    tag: '-17%',
+    image:
+      'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    brand: 'Puma',
+    name: 'Velocity',
+    price: '41 000 FCFA',
+    oldPrice: '50 000 FCFA',
+    tag: '-18%',
+    image:
+      'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=80',
+  },
+];
+
+const newArrivals = [
+  {
+    brand: 'Jordan',
+    name: 'Jordan 1 Low',
+    price: '60 000 FCFA',
+    oldPrice: '70 000 FCFA',
+    tag: 'Nouveau',
+    image:
+      'https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    brand: 'Yeezy',
+    name: 'Slide Core',
+    price: '36 000 FCFA',
+    oldPrice: '44 000 FCFA',
     tag: 'Promo',
     image:
-      'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    name: 'Casque Audio',
-    price: '€89',
-    tag: 'Populaire',
-    image:
-      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?auto=format&fit=crop&w=900&q=80',
   },
 ];
 
@@ -50,37 +83,30 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerRow}>
-          <View style={styles.headerTextBlock}>
-            <Text style={styles.greeting}>Bonjour, Max</Text>
-            <Text style={styles.title}>Trouve ton prochain coup de cœur</Text>
-          </View>
-
-          <Pressable style={styles.avatarButton} accessibilityRole="button">
-            <Text style={styles.avatarText}>M</Text>
+          <Text style={styles.title}>AMIR2X</Text>
+          <Pressable
+            style={styles.searchButton}
+            accessibilityRole="button"
+            onPress={() => router.push('/explore')}
+          >
+            <SearchIcon size={18} color={BrandColors.white} />
           </Pressable>
         </View>
 
-        <Pressable style={styles.searchBar} accessibilityRole="button">
-          <Text style={styles.searchIcon}>⌕</Text>
-          <Text style={styles.searchText}>Rechercher un produit...</Text>
-        </Pressable>
-
         <View style={styles.heroCard}>
           <View style={styles.heroContent}>
-            <Text style={styles.heroLabel}>Promo du jour</Text>
-            <Text style={styles.heroTitle}>Jusqu&apos;à 50% de réduction</Text>
-            <Text style={styles.heroSubtitle}>
-              Sur les nouvelles collections élégantes et essentials du moment.
-            </Text>
+            <Text style={styles.heroLabel}>Nouveautés</Text>
+            <Text style={styles.heroTitle}>Jusqu&apos;à -50%</Text>
+            <Text style={styles.heroSubtitle}>Les modèles les plus demandés du moment.</Text>
 
             <Pressable style={styles.primaryButton} accessibilityRole="button">
-              <Text style={styles.primaryButtonText}>Acheter maintenant</Text>
+              <Text style={styles.primaryButtonText}>Découvrir les offres</Text>
             </Pressable>
           </View>
 
           <Image
             source={{
-              uri: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80',
+              uri: 'https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&w=900&q=80',
             }}
             style={styles.heroImage}
           />
@@ -88,7 +114,6 @@ export default function HomeScreen() {
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Catégories</Text>
-          <Text style={styles.sectionLink}>Voir tout</Text>
         </View>
 
         <ScrollView
@@ -106,29 +131,54 @@ export default function HomeScreen() {
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Tendances</Text>
-          <Text style={styles.sectionLink}>Plus populaires</Text>
+          <Text style={styles.sectionLink}>Voir tout</Text>
         </View>
 
         <View style={styles.productGrid}>
-          {trendingProducts.map((product) => (
-            <Pressable key={product.name} style={styles.productCard} accessibilityRole="button">
+          {trends.map((product) => (
+            <Pressable key={`${product.brand}-${product.name}`} style={styles.productCard} accessibilityRole="button">
               <View style={styles.productImageWrapper}>
                 <Image source={{ uri: product.image }} style={styles.productImage} />
+                <Pressable style={styles.favoriteButton} accessibilityRole="button">
+                  <Text style={styles.favoriteButtonText}>♡</Text>
+                </Pressable>
                 <Text style={styles.productTag}>{product.tag}</Text>
               </View>
 
+              <Text style={styles.productBrand}>{product.brand}</Text>
               <Text style={styles.productName}>{product.name}</Text>
-              <Text style={styles.productPrice}>{product.price}</Text>
+              <View style={styles.priceRow}>
+                <Text style={styles.productPrice}>{product.price}</Text>
+                <Text style={styles.oldPrice}>{product.oldPrice}</Text>
+              </View>
             </Pressable>
           ))}
         </View>
 
-        <View style={styles.promoBanner}>
-          <View>
-            <Text style={styles.promoTitle}>Livraison rapide</Text>
-            <Text style={styles.promoText}>Commandes avant 20h, livré demain.</Text>
-          </View>
-          <Text style={styles.promoBadge}>Free</Text>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Nouveautés</Text>
+          <Text style={styles.sectionLink}>Voir tout</Text>
+        </View>
+
+        <View style={styles.productGrid}>
+          {newArrivals.map((product) => (
+            <Pressable key={`${product.brand}-${product.name}`} style={styles.productCard} accessibilityRole="button">
+              <View style={styles.productImageWrapper}>
+                <Image source={{ uri: product.image }} style={styles.productImage} />
+                <Pressable style={styles.favoriteButton} accessibilityRole="button">
+                  <Text style={styles.favoriteButtonText}>♡</Text>
+                </Pressable>
+                <Text style={styles.productTag}>{product.tag}</Text>
+              </View>
+
+              <Text style={styles.productBrand}>{product.brand}</Text>
+              <Text style={styles.productName}>{product.name}</Text>
+              <View style={styles.priceRow}>
+                <Text style={styles.productPrice}>{product.price}</Text>
+                <Text style={styles.oldPrice}>{product.oldPrice}</Text>
+              </View>
+            </Pressable>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -143,126 +193,91 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingTop: 12,
-    paddingBottom: 32,
-    gap: 20,
+    paddingBottom: 36,
+    gap: 18,
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 16,
-  },
-  headerTextBlock: {
-    flex: 1,
-  },
-  greeting: {
-    color: BrandColors.slate,
-    fontSize: 14,
-    marginBottom: 6,
-    fontFamily: BrandFonts.body,
+    marginTop: 4,
   },
   title: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: '800',
     color: BrandColors.charcoal,
-    lineHeight: 34,
     fontFamily: BrandFonts.display,
+    letterSpacing: 0.5,
   },
-  avatarButton: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
+  searchButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     backgroundColor: BrandColors.charcoal,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  avatarText: {
-    color: BrandColors.white,
-    fontWeight: '700',
-    fontSize: 18,
-    fontFamily: BrandFonts.display,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderRadius: 16,
-    backgroundColor: BrandColors.white,
-    borderWidth: 1,
-    borderColor: BrandColors.line,
-  },
-  searchIcon: {
-    fontSize: 18,
-    marginRight: 10,
-    color: BrandColors.slate,
-  },
-  searchText: {
-    color: BrandColors.slate,
-    fontSize: 15,
-    fontFamily: BrandFonts.body,
   },
   heroCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: BrandColors.charcoal,
+    backgroundColor: '#0F172A',
     borderRadius: 24,
     padding: 18,
     overflow: 'hidden',
-    minHeight: 180,
+    minHeight: 170,
   },
   heroContent: {
     flex: 1,
     paddingRight: 12,
   },
   heroLabel: {
-    color: BrandColors.sand,
-    fontSize: 12,
+    color: '#F3D8AE',
+    fontSize: 11,
     fontWeight: '700',
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
     textTransform: 'uppercase',
-    marginBottom: 10,
+    marginBottom: 8,
     fontFamily: BrandFonts.display,
   },
   heroTitle: {
     color: BrandColors.white,
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '800',
-    lineHeight: 32,
+    lineHeight: 34,
     marginBottom: 8,
     fontFamily: BrandFonts.display,
   },
   heroSubtitle: {
     color: '#D1D5DB',
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
     marginBottom: 16,
     fontFamily: BrandFonts.body,
   },
   primaryButton: {
-    backgroundColor: BrandColors.white,
+    backgroundColor: '#F4E6D0',
     alignSelf: 'flex-start',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 11,
     borderRadius: 12,
   },
   primaryButtonText: {
     color: BrandColors.charcoal,
     fontWeight: '700',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: BrandFonts.display,
   },
   heroImage: {
     width: 120,
-    height: 140,
+    height: 132,
     borderRadius: 18,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 4,
+    marginTop: 2,
   },
   sectionTitle: {
     color: BrandColors.charcoal,
@@ -272,32 +287,33 @@ const styles = StyleSheet.create({
   },
   sectionLink: {
     color: BrandColors.copper,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '700',
     fontFamily: BrandFonts.display,
   },
   categoryRow: {
-    paddingRight: 4,
-    gap: 12,
+    paddingRight: 6,
+    gap: 10,
+    paddingBottom: 4,
   },
   categoryCard: {
-    width: 90,
-    height: 90,
+    width: 94,
+    height: 78,
     backgroundColor: BrandColors.white,
     borderRadius: 18,
     borderWidth: 1,
     borderColor: BrandColors.line,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
   },
   categoryIcon: {
-    fontSize: 28,
+    fontSize: 22,
   },
   categoryName: {
     color: BrandColors.charcoal,
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 12,
+    fontWeight: '700',
     fontFamily: BrandFonts.body,
   },
   productGrid: {
@@ -320,8 +336,24 @@ const styles = StyleSheet.create({
   },
   productImage: {
     width: '100%',
-    height: 160,
+    height: 156,
     borderRadius: 16,
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 8,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  favoriteButtonText: {
+    color: BrandColors.charcoal,
+    fontSize: 16,
+    fontWeight: '700',
   },
   productTag: {
     position: 'absolute',
@@ -329,12 +361,19 @@ const styles = StyleSheet.create({
     left: 10,
     backgroundColor: '#E0F2FE',
     color: '#0369A1',
-    fontSize: 10,
-    fontWeight: '700',
-    paddingHorizontal: 8,
+    fontSize: 9,
+    fontWeight: '800',
+    paddingHorizontal: 7,
     paddingVertical: 5,
     borderRadius: 999,
     fontFamily: BrandFonts.display,
+  },
+  productBrand: {
+    color: BrandColors.slate,
+    fontSize: 11,
+    fontWeight: '600',
+    marginBottom: 2,
+    fontFamily: BrandFonts.body,
   },
   productName: {
     color: BrandColors.charcoal,
@@ -343,43 +382,23 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     fontFamily: BrandFonts.display,
   },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
   productPrice: {
     color: BrandColors.charcoal,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '800',
     fontFamily: BrandFonts.display,
   },
-  promoBanner: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: BrandColors.promo,
-    borderRadius: 20,
-    paddingHorizontal: 18,
-    paddingVertical: 16,
-    borderWidth: 1,
-    borderColor: BrandColors.promoBorder,
-  },
-  promoTitle: {
-    color: '#312E81',
-    fontSize: 18,
-    fontWeight: '800',
-    fontFamily: BrandFonts.display,
-  },
-  promoText: {
-    color: '#4338CA',
-    fontSize: 12,
-    marginTop: 4,
+  oldPrice: {
+    color: BrandColors.slate,
+    fontSize: 11,
+    fontWeight: '600',
+    textDecorationLine: 'line-through',
     fontFamily: BrandFonts.body,
-  },
-  promoBadge: {
-    backgroundColor: BrandColors.copper,
-    color: BrandColors.white,
-    fontSize: 12,
-    fontWeight: '800',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 999,
-    fontFamily: BrandFonts.display,
   },
 });
