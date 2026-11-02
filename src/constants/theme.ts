@@ -24,7 +24,27 @@ export const Colors = {
   },
 } as const;
 
+export const BrandColors = {
+  charcoal: '#111827',
+  charcoalSoft: '#1F2937',
+  slate: '#6B7280',
+  stone: '#F5F5F4',
+  sand: '#D6C7B4',
+  copper: '#B86E3D',
+  white: '#FFFFFF',
+  line: '#E5E7EB',
+  softShadow: '#EEF2F7',
+  promo: '#EEF2FF',
+  promoBorder: '#C7D2FE',
+};
+
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+
+export const BrandFonts = {
+  display: 'Manrope',
+  body: 'Inter',
+  mono: 'System',
+};
 
 export const Fonts = Platform.select({
   ios: {
