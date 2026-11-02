@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { HeroBanner } from '@/components/home/hero-banner';
 import { BrandLogo } from '@/components/home/logo';
 import { SearchIcon } from '@/components/home/search-icon';
 import { BrandColors, BrandFonts } from '@/constants/theme';
@@ -94,24 +95,10 @@ export default function HomeScreen() {
           </Pressable>
         </View>
 
-        <View style={styles.heroCard}>
-          <View style={styles.heroContent}>
-            <Text style={styles.heroLabel}>Nouveautés</Text>
-            <Text style={styles.heroTitle}>Jusqu&apos;à -50%</Text>
-            <Text style={styles.heroSubtitle}>Les modèles les plus demandés du moment.</Text>
-
-            <Pressable style={styles.primaryButton} accessibilityRole="button">
-              <Text style={styles.primaryButtonText}>Découvrir les offres</Text>
-            </Pressable>
-          </View>
-
-          <Image
-            source={{
-              uri: 'https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&w=900&q=80',
-            }}
-            style={styles.heroImage}
-          />
-        </View>
+        <HeroBanner
+         
+          onPress={() => router.push('/explore')}
+        />
 
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Catégories</Text>
