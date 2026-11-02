@@ -1,5 +1,13 @@
-import { Pressable, StyleSheet, Text, type PressableProps, type StyleProp, type ViewStyle } from 'react-native';
-import { BrandColors, BrandFonts } from '@/constants/theme'; // Ajustez le chemin d'import si nécessaire
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  type PressableProps,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
+
+import { BrandColors, BrandFonts } from '@/constants/theme';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 
@@ -32,19 +40,16 @@ export function Button({
       ]}
       {...props}
     >
-      <Text style={[styles.label, textColors[variant], disabled && styles.disabledLabel]}>
-        {title}
-      </Text>
+      <Text style={[styles.label, textColors[variant], disabled && styles.disabledLabel]}>{title}</Text>
     </Pressable>
   );
 }
 
-// Couleurs de texte mappées sur vos BrandColors
 const textColors = {
   primary: { color: BrandColors.charcoal },
   secondary: { color: BrandColors.white },
   ghost: { color: BrandColors.charcoal },
-};
+} as const;
 
 const styles = StyleSheet.create({
   base: {
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   primary: {
-    backgroundColor: BrandColors.sand, // Utilise votre couleur #D6C7B4 au lieu de l'ancien hexadécimal
+    backgroundColor: BrandColors.sand,
   },
   secondary: {
     backgroundColor: BrandColors.charcoal,
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   disabledLabel: {
-    color: BrandColors.slate, // Utilise votre couleur grise pour l'état désactivé
+    color: BrandColors.slate,
   },
   pressed: {
     opacity: 0.7,
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: '700',
     fontSize: 13,
-    fontFamily: BrandFonts.display, // Connecté à votre police 'Manrope'
+    fontFamily: BrandFonts.display,
     textAlign: 'center',
   },
 });

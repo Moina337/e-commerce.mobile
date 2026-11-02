@@ -1,86 +1,64 @@
-import { Pressable, StyleSheet, Text, type PressableProps, type StyleProp, type ViewStyle } from 'react-native';
-import { BrandColors, BrandFonts } from '@/constants/theme'; // Ajustez le chemin d'import si nécessaire
+export const BrandColors = {
+  white: '#FFFFFF',
+  charcoal: '#111827',
+  stone: '#F7F2EB',
+  sand: '#D6C7B4',
+  copper: '#B7783E',
+  slate: '#64748B',
+  line: '#E5E7EB',
+  softShadow: '#E7E2D8',
+  black: '#000000',
+  cream: '#F4E6D0',
+} as const;
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+export const BrandFonts = {
+  display: 'Manrope-Bold',
+  body: 'Manrope-Regular',
+} as const;
 
-type ButtonProps = PressableProps & {
-  title: string;
-  variant?: ButtonVariant;
-  fullWidth?: boolean;
-  style?: StyleProp<ViewStyle>;
-};
+export const Colors = {
+  light: {
+    text: '#11181C',
+    textSecondary: '#475569',
+    background: '#FFFFFF',
+    backgroundElement: '#F3F4F6',
+    backgroundSelected: '#E5E7EB',
+    border: '#D1D5DB',
+    tint: '#2F95DC',
+    icon: '#687076',
+    tabIconDefault: '#687076',
+    tabIconSelected: '#111827',
+  },
+  dark: {
+    text: '#ECEDEE',
+    textSecondary: '#CBD5E1',
+    background: '#151718',
+    backgroundElement: '#1F2937',
+    backgroundSelected: '#374151',
+    border: '#374151',
+    tint: '#FFFFFF',
+    icon: '#9BA1A6',
+    tabIconDefault: '#9BA1A6',
+    tabIconSelected: '#FFFFFF',
+  },
+} as const;
 
-export function Button({
-  title,
-  variant = 'primary',
-  fullWidth = false,
-  disabled,
-  style,
-  ...props
-}: ButtonProps) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      disabled={disabled}
-      style={({ pressed }) => [
-        styles.base,
-        styles[variant],
-        fullWidth && styles.fullWidth,
-        disabled && styles.disabled,
-        pressed && !disabled && styles.pressed,
-        style,
-      ]}
-      {...props}
-    >
-      <Text style={[styles.label, textColors[variant], disabled && styles.disabledLabel]}>
-        {title}
-      </Text>
-    </Pressable>
-  );
-}
+export type ThemeColor = keyof typeof Colors.light;
 
-// Couleurs de texte mappées sur vos BrandColors
-const textColors = {
-  primary: { color: BrandColors.charcoal },
-  secondary: { color: BrandColors.white },
-  ghost: { color: BrandColors.charcoal },
-};
+export const Fonts = {
+  sans: 'System',
+  mono: 'Courier New',
+} as const;
 
-const styles = StyleSheet.create({
-  base: {
-    alignSelf: 'flex-start',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 11,
-    borderWidth: 1,
-    borderColor: 'transparent',
-  },
-  primary: {
-    backgroundColor: BrandColors.sand, // Utilise votre couleur #D6C7B4 au lieu de l'ancien hexadécimal
-  },
-  secondary: {
-    backgroundColor: BrandColors.charcoal,
-  },
-  ghost: {
-    backgroundColor: 'transparent',
-    borderColor: BrandColors.line,
-  },
-  fullWidth: {
-    alignSelf: 'stretch',
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  disabledLabel: {
-    color: BrandColors.slate, // Utilise votre couleur grise pour l'état désactivé
-  },
-  pressed: {
-    opacity: 0.7,
-  },
-  label: {
-    fontWeight: '700',
-    fontSize: 13,
-    fontFamily: BrandFonts.display, // Connecté à votre police 'Manrope'
-    textAlign: 'center',
-  },
-});
+export const Spacing = {
+  half: 6,
+  one: 4,
+  two: 8,
+  three: 12,
+  four: 16,
+  five: 20,
+  six: 24,
+} as const;
+
+export const BottomTabInset = 0;
+export const MaxContentWidth = 960;
