@@ -2,7 +2,8 @@ import { router } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { SearchIcon } from '@/components/search-icon';
+import { BrandLogo } from '@/components/home/logo';
+import { SearchIcon } from '@/components/home/search-icon';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 
 const categories = [
@@ -83,7 +84,7 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerRow}>
-          <Text style={styles.title}>AMIR2X</Text>
+          <BrandLogo showMark={true} />
           <Pressable
             style={styles.searchButton}
             accessibilityRole="button"
