@@ -1,5 +1,6 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
+import { Button } from '@/components/button/button';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 
 type HeroBannerProps = {
@@ -24,9 +25,7 @@ export function HeroBanner({
         <Text style={styles.heroTitle}>{title}</Text>
         <Text style={styles.heroSubtitle}>{subtitle}</Text>
 
-        <Pressable style={styles.primaryButton} accessibilityRole="button" onPress={onPress}>
-          <Text style={styles.primaryButtonText}>{ctaLabel}</Text>
-        </Pressable>
+        <Button title={ctaLabel} onPress={onPress} variant="primary" />
       </View>
 
       <Image
@@ -76,19 +75,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     marginBottom: 16,
     fontFamily: BrandFonts.body,
-  },
-  primaryButton: {
-    backgroundColor: '#F4E6D0',
-    alignSelf: 'flex-start',
-    paddingHorizontal: 16,
-    paddingVertical: 11,
-    borderRadius: 12,
-  },
-  primaryButtonText: {
-    color: BrandColors.charcoal,
-    fontWeight: '700',
-    fontSize: 13,
-    fontFamily: BrandFonts.display,
   },
   heroImage: {
     width: 120,

@@ -1,87 +1,86 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://unistyl.es/), etc.
- */
+import { Pressable, StyleSheet, Text, type PressableProps, type StyleProp, type ViewStyle } from 'react-native';
+import { BrandColors, BrandFonts } from '@/constants/theme'; // Ajustez le chemin d'import si nécessaire
 
-import '@/global.css';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 
-import { Platform } from 'react-native';
-
-export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-    colorAccent: '#a0612b',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-    colorAccent: '#a0612b',
-  },
-} as const;
-
-export const BrandColors = {
-  charcoal: '#111827',
-  charcoalSoft: '#1F2937',
-  slate: '#6B7280',
-  stone: '#F5F5F4',
-  sand: '#D6C7B4',
-  copper: '#B86E3D',
-  white: '#FFFFFF',
-  line: '#E5E7EB',
-  softShadow: '#EEF2F7',
-  promo: '#EEF2FF',
-  promoBorder: '#C7D2FE',
+type ButtonProps = PressableProps & {
+  title: string;
+  variant?: ButtonVariant;
+  fullWidth?: boolean;
+  style?: StyleProp<ViewStyle>;
 };
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+export function Button({
+  title,
+  variant = 'primary',
+  fullWidth = false,
+  disabled,
+  style,
+  ...props
+}: ButtonProps) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      disabled={disabled}
+      style={({ pressed }) => [
+        styles.base,
+        styles[variant],
+        fullWidth && styles.fullWidth,
+        disabled && styles.disabled,
+        pressed && !disabled && styles.pressed,
+        style,
+      ]}
+      {...props}
+    >
+      <Text style={[styles.label, textColors[variant], disabled && styles.disabledLabel]}>
+        {title}
+      </Text>
+    </Pressable>
+  );
+}
 
-export const BrandFonts = {
-  display: 'Manrope',
-  body: 'Inter',
-  mono: 'System',
+// Couleurs de texte mappées sur vos BrandColors
+const textColors = {
+  primary: { color: BrandColors.charcoal },
+  secondary: { color: BrandColors.white },
+  ghost: { color: BrandColors.charcoal },
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
+const styles = StyleSheet.create({
+  base: {
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 11,
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
+  primary: {
+    backgroundColor: BrandColors.sand, // Utilise votre couleur #D6C7B4 au lieu de l'ancien hexadécimal
   },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
+  secondary: {
+    backgroundColor: BrandColors.charcoal,
+  },
+  ghost: {
+    backgroundColor: 'transparent',
+    borderColor: BrandColors.line,
+  },
+  fullWidth: {
+    alignSelf: 'stretch',
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+  disabledLabel: {
+    color: BrandColors.slate, // Utilise votre couleur grise pour l'état désactivé
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+  label: {
+    fontWeight: '700',
+    fontSize: 13,
+    fontFamily: BrandFonts.display, // Connecté à votre police 'Manrope'
+    textAlign: 'center',
   },
 });
-
-export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
-} as const;
-
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
