@@ -11,6 +11,7 @@ type ProductCardProps = {
 export function ProductCard({ product, onPress }: ProductCardProps) {
   const firstImage = product.images[0]?.url ?? '';
   const price = `${product.price.toLocaleString('fr-FR')} FCFA`;
+  const imageSource = firstImage.startsWith('http') ? firstImage : `https://example.com${firstImage}`;
 
   return (
     <Pressable
@@ -20,7 +21,7 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
     >
       <View style={styles.imageWrapper}>
         <Image
-          source={{ uri: firstImage.startsWith('/api/') ? `https://example.com${firstImage}` : firstImage }}
+          source={{ uri: imageSource }}
           style={styles.image}
           resizeMode="cover"
         />

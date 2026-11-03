@@ -41,7 +41,8 @@ export const productService = {
 
   async getImageContent(id: number): Promise<string> {
     const image = await this.getImageById(id);
-    return `${API_BASE_URL}${image?.url ?? '/api/images/not-found/content'}`;
+    const imageUrl = image?.url ?? '/api/images/not-found/content';
+    return imageUrl.startsWith('http') ? imageUrl : `${API_BASE_URL}${imageUrl}`;
   },
 };
 

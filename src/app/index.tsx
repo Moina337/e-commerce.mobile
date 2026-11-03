@@ -1,11 +1,15 @@
-import { router } from 'expo-router';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
 import { HeroBanner } from '@/components/home/hero-banner';
 import { BrandLogo } from '@/components/home/logo';
 import { SearchIcon } from '@/components/home/search-icon';
+import { ProductSection } from '@/components/product';
 import { BrandColors, BrandFonts } from '@/constants/theme';
+import type { Product } from '@/data/products.mock';
+import productService from '@/services/productService';
 
 const categories = [
   { name: 'Sneakers', icon: '👟' },
@@ -17,67 +21,23 @@ const categories = [
   { name: 'Boots', icon: '🥾' },
 ];
 
-const trends = [
-  {
-    brand: 'Nike',
-    name: 'Air Max',
-    price: '45 000 FCFA',
-    oldPrice: '55 000 FCFA',
-    tag: '-18%',
-    image:
-      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    brand: 'Adidas',
-    name: 'Ultraboost',
-    price: '52 000 FCFA',
-    oldPrice: '63 000 FCFA',
-    tag: '-20%',
-    image:
-      'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    brand: 'New Balance',
-    name: '530 Legacy',
-    price: '48 000 FCFA',
-    oldPrice: '58 000 FCFA',
-    tag: '-17%',
-    image:
-      'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    brand: 'Puma',
-    name: 'Velocity',
-    price: '41 000 FCFA',
-    oldPrice: '50 000 FCFA',
-    tag: '-18%',
-    image:
-      'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=80',
-  },
-];
-
-const newArrivals = [
-  {
-    brand: 'Jordan',
-    name: 'Jordan 1 Low',
-    price: '60 000 FCFA',
-    oldPrice: '70 000 FCFA',
-    tag: 'Nouveau',
-    image:
-      'https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    brand: 'Yeezy',
-    name: 'Slide Core',
-    price: '36 000 FCFA',
-    oldPrice: '44 000 FCFA',
-    tag: 'Promo',
-    image:
-      'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?auto=format&fit=crop&w=900&q=80',
-  },
-];
-
 export default function HomeScreen() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    let active = true;
+
+    productService.getHomeProducts().then((data) => {
+      if (active) {
+        setProducts(data);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -117,57 +77,8 @@ export default function HomeScreen() {
           ))}
         </ScrollView>
 
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Tendances</Text>
-          <Text style={styles.sectionLink}>Voir tout</Text>
-        </View>
-
-        <View style={styles.productGrid}>
-          {trends.map((product) => (
-            <Pressable key={`${product.brand}-${product.name}`} style={styles.productCard} accessibilityRole="button">
-              <View style={styles.productImageWrapper}>
-                <Image source={{ uri: product.image }} style={styles.productImage} />
-                <Pressable style={styles.favoriteButton} accessibilityRole="button">
-                  <Text style={styles.favoriteButtonText}>♡</Text>
-                </Pressable>
-                <Text style={styles.productTag}>{product.tag}</Text>
-              </View>
-
-              <Text style={styles.productBrand}>{product.brand}</Text>
-              <Text style={styles.productName}>{product.name}</Text>
-              <View style={styles.priceRow}>
-                <Text style={styles.productPrice}>{product.price}</Text>
-                <Text style={styles.oldPrice}>{product.oldPrice}</Text>
-              </View>
-            </Pressable>
-          ))}
-        </View>
-
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Nouveautés</Text>
-          <Text style={styles.sectionLink}>Voir tout</Text>
-        </View>
-
-        <View style={styles.productGrid}>
-          {newArrivals.map((product) => (
-            <Pressable key={`${product.brand}-${product.name}`} style={styles.productCard} accessibilityRole="button">
-              <View style={styles.productImageWrapper}>
-                <Image source={{ uri: product.image }} style={styles.productImage} />
-                <Pressable style={styles.favoriteButton} accessibilityRole="button">
-                  <Text style={styles.favoriteButtonText}>♡</Text>
-                </Pressable>
-                <Text style={styles.productTag}>{product.tag}</Text>
-              </View>
-
-              <Text style={styles.productBrand}>{product.brand}</Text>
-              <Text style={styles.productName}>{product.name}</Text>
-              <View style={styles.priceRow}>
-                <Text style={styles.productPrice}>{product.price}</Text>
-                <Text style={styles.oldPrice}>{product.oldPrice}</Text>
-              </View>
-            </Pressable>
-          ))}
-        </View>
+        <ProductSection title="Tendances" products={products.slice(0, 4)} />
+        <ProductSection title="Nouveautés" products={products.slice(4)} />
       </ScrollView>
     </SafeAreaView>
   );
