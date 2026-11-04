@@ -52,26 +52,22 @@ export function ScreenState({
   }
 
   if (isEmpty) {
-  return (
-    <View style={styles.stateContainer}>
-      <Text style={styles.errorTitle}>Aucun résultat</Text>
-      <Text style={styles.stateText}>{emptyText}</Text>
-    </View>
-  );
-}
+    return (
+      <View style={styles.stateContainer}>
+        <Text style={styles.errorTitle}>Aucun résultat</Text>
+        <Text style={styles.stateText}>{emptyText}</Text>
+      </View>
+    );
+  }
 
   return <>{children}</>;
 }
 
 const styles = StyleSheet.create({
   stateContainer: {
-    minHeight: 180,
-    backgroundColor: BrandColors.white,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: BrandColors.line,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1, // 💡 Aligne et étire le composant pour occuper tout l'espace central disponible
+    justifyContent: 'center', // 💡 Centre verticalement au milieu de l'écran
+    alignItems: 'center', // 💡 Centre horizontalement au milieu de l'écran
     padding: 24,
     gap: 10,
   },
