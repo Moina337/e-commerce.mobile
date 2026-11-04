@@ -6,7 +6,7 @@ import {
   type Product,
   type ProductCategory,
   type ProductImage,
-} from '../data/products.mock';
+} from '@/data/products.mock';
 
 const API_BASE_URL = 'https://api.example.com';
 

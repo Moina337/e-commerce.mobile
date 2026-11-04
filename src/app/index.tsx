@@ -8,6 +8,7 @@ import { HeroBanner } from '@/components/home/hero-banner';
 import { BrandLogo } from '@/components/home/logo';
 import { SearchIcon } from '@/components/home/search-icon';
 import { ProductSection } from '@/components/product';
+import { ScreenState } from '@/components/screen-state';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import type { Product, ProductCategory } from '@/data/products.mock';
 import productService from '@/services/productService';
@@ -15,54 +16,66 @@ import productService from '@/services/productService';
 export default function HomeScreen() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<ProductCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadHomeData = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const [productsData, categoriesData] = await Promise.all([
+        productService.getHomeProducts(),
+        productService.getAllCategories(),
+      ]);
+
+      setProducts(productsData);
+      setCategories(categoriesData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Impossible de charger les données.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    let active = true;
-
-    productService.getHomeProducts().then((data) => {
-      if (active) {
-        setProducts(data);
-      }
-    });
-
-    productService.getAllCategories().then((data) => {
-      if (active) {
-        setCategories(data);
-      }
-    });
-
-    return () => {
-      active = false;
-    };
+    void loadHomeData();
   }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        showsVerticalScrollIndicator={false}
+      <ScreenState
+        isLoading={isLoading}
+        error={error}
+        loadingText="Chargement des produits..."
+        errorText="Impossible de charger la page d’accueil."
+        onRetry={() => {
+          void loadHomeData();
+        }}
       >
-        <View style={styles.headerRow}>
-          <BrandLogo showMark={true} />
-          <Pressable
-            style={styles.searchButton}
-            accessibilityRole="button"
-            onPress={() => router.push('/explore')}
-          >
-            <SearchIcon size={18} color={BrandColors.white} />
-          </Pressable>
-        </View>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.headerRow}>
+            <BrandLogo showMark={true} />
+            <Pressable
+              style={styles.searchButton}
+              accessibilityRole="button"
+              onPress={() => router.push('/explore')}
+            >
+              <SearchIcon size={18} color={BrandColors.white} />
+            </Pressable>
+          </View>
 
-        <HeroBanner
-         
-          onPress={() => router.push('/explore')}
-        />
+          <HeroBanner onPress={() => router.push('/explore')} />
 
-        <CategorySection categories={categories} />
+          <CategorySection categories={categories} />
 
-        <ProductSection title="Tendances" products={products.slice(0, 4)} />
-        <ProductSection title="Nouveautés" products={products.slice(4)} />
-      </ScrollView>
+          <ProductSection title="Tendances" products={products.slice(0, 4)} />
+          <ProductSection title="Nouveautés" products={products.slice(4)} />
+        </ScrollView>
+      </ScreenState>
     </SafeAreaView>
   );
 }
