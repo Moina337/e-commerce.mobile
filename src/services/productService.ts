@@ -1,4 +1,12 @@
-import { mockApiResponse, mockHomeProducts, mockImages, type Product, type ProductImage } from '../data/products.mock';
+import {
+  mockApiResponse,
+  mockCategories,
+  mockHomeProducts,
+  mockImages,
+  type Product,
+  type ProductCategory,
+  type ProductImage,
+} from '../data/products.mock';
 
 const API_BASE_URL = 'https://api.example.com';
 
@@ -6,6 +14,12 @@ export const productService = {
   async getHomeProducts(): Promise<Product[]> {
     return new Promise((resolve) => {
       setTimeout(() => resolve(mockHomeProducts), 300);
+    });
+  },
+
+  async getAllCategories(): Promise<ProductCategory[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(mockCategories), 250);
     });
   },
 

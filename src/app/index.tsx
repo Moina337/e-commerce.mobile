@@ -3,26 +3,18 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
+import { CategorySection } from '@/components/category';
 import { HeroBanner } from '@/components/home/hero-banner';
 import { BrandLogo } from '@/components/home/logo';
 import { SearchIcon } from '@/components/home/search-icon';
 import { ProductSection } from '@/components/product';
 import { BrandColors, BrandFonts } from '@/constants/theme';
-import type { Product } from '@/data/products.mock';
+import type { Product, ProductCategory } from '@/data/products.mock';
 import productService from '@/services/productService';
-
-const categories = [
-  { name: 'Sneakers', icon: '👟' },
-  { name: 'Homme', icon: '🧍' },
-  { name: 'Femme', icon: '💃' },
-  { name: 'Sport', icon: '🏃' },
-  { name: 'Classique', icon: '🕶️' },
-  { name: 'Sandales', icon: '🩴' },
-  { name: 'Boots', icon: '🥾' },
-];
 
 export default function HomeScreen() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<ProductCategory[]>([]);
 
   useEffect(() => {
     let active = true;
@@ -30,6 +22,12 @@ export default function HomeScreen() {
     productService.getHomeProducts().then((data) => {
       if (active) {
         setProducts(data);
+      }
+    });
+
+    productService.getAllCategories().then((data) => {
+      if (active) {
+        setCategories(data);
       }
     });
 
@@ -60,22 +58,7 @@ export default function HomeScreen() {
           onPress={() => router.push('/explore')}
         />
 
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Catégories</Text>
-        </View>
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryRow}
-        >
-          {categories.map((category) => (
-            <Pressable key={category.name} style={styles.categoryCard} accessibilityRole="button">
-              <Text style={styles.categoryIcon}>{category.icon}</Text>
-              <Text style={styles.categoryName}>{category.name}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
+        <CategorySection categories={categories} />
 
         <ProductSection title="Tendances" products={products.slice(0, 4)} />
         <ProductSection title="Nouveautés" products={products.slice(4)} />
@@ -206,14 +189,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  categoryIcon: {
-    fontSize: 22,
-  },
   categoryName: {
     color: BrandColors.charcoal,
     fontSize: 12,
     fontWeight: '700',
     fontFamily: BrandFonts.body,
+    textAlign: 'center',
   },
   productGrid: {
     flexDirection: 'row',
