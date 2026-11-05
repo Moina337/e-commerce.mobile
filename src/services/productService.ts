@@ -1,3 +1,4 @@
+
 import {
   mockApiResponse,
   mockCategories,
@@ -8,55 +9,175 @@ import {
   type ProductImage,
 } from '@/data/products.mock';
 
-const API_BASE_URL = 'https://api.example.com';
+export const API_BASE_URL =
+  'https://ecommerce-api-1eu4.onrender.com/api';
+
+/**
+ * Résout l'URL d'une image.
+ * - Cloudinary : conserve l'URL HTTPS.
+ * - Ancienne image locale : utilise l'API Spring Boot.
+ */
+export const resolveImageUrl = (imageUrl?: string): string => {
+  if (!imageUrl?.trim()) {
+    return '';
+  }
+
+  const url = imageUrl.trim();
+
+  if (/^https?:\/\//i.test(url)) {
+    return url;
+  }
+
+  return `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+};
+
+/**
+ * Normalise les produits reçus de Spring Boot.
+ */
+const normalizeProducts = (payload: unknown): Product[] => {
+  let products: Product[] = [];
+
+  if (Array.isArray(payload)) {
+    products = payload as Product[];
+  } else if (
+    payload &&
+    typeof payload === 'object' &&
+    'content' in payload
+  ) {
+    const content = (payload as { content?: unknown }).content;
+
+    if (Array.isArray(content)) {
+      products = content as Product[];
+    }
+  }
+
+  return products.map((product) => ({
+    ...product,
+    images: (product.images ?? []).map((image) => ({
+      ...image,
+      url: resolveImageUrl(image.url),
+    })),
+  }));
+};
+
+/**
+ * Effectue une requête HTTP et retourne le JSON.
+ */
+const fetchJson = async <T>(url: string): Promise<T> => {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(
+      `Erreur HTTP ${response.status} : impossible de récupérer les données.`
+    );
+  }
+
+  return (await response.json()) as T;
+};
 
 export const productService = {
+  /**
+   * Produits de la page d'accueil.
+   */
   async getHomeProducts(): Promise<Product[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockHomeProducts), 300);
-    });
+    try {
+      const response = await fetchJson<unknown>(
+        `${API_BASE_URL}/products?page=0&size=8`
+      );
+
+      return normalizeProducts(response);
+    } catch (error) {
+      console.error('Erreur récupération produits accueil :', error);
+      return normalizeProducts(mockHomeProducts);
+    }
   },
 
+  /**
+   * Toutes les catégories.
+   */
   async getAllCategories(): Promise<ProductCategory[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockCategories), 250);
-    });
+    try {
+      return await fetchJson<ProductCategory[]>(
+        `${API_BASE_URL}/categories`
+      );
+    } catch (error) {
+      console.error('Erreur récupération catégories :', error);
+      return mockCategories;
+    }
   },
 
-  async getAllProducts(): Promise<Product[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockApiResponse.content as Product[]), 300);
-    });
+  /**
+   * Produits paginés.
+   */
+  async getAllProducts(
+    page = 0,
+    size = 100
+  ): Promise<Product[]> {
+    try {
+      const response = await fetchJson<unknown>(
+        `${API_BASE_URL}/products?page=${page}&size=${size}`
+      );
+
+      return normalizeProducts(response);
+    } catch (error) {
+      console.error('Erreur récupération produits :', error);
+      return normalizeProducts(mockApiResponse.content);
+    }
   },
 
+  /**
+   * Images mockées.
+   */
   async getAllImages(): Promise<ProductImage[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockImages), 250);
-    });
+    return mockImages.map((image) => ({
+      ...image,
+      url: resolveImageUrl(image.url),
+    }));
   },
 
-  async getImageById(id: number): Promise<ProductImage | undefined> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const image = mockImages.find((item: ProductImage) => item.id === id);
-        resolve(image);
-      }, 200);
-    });
+  /**
+   * Recherche une image par identifiant.
+   */
+  async getImageById(
+    id: number
+  ): Promise<ProductImage | undefined> {
+    const image = mockImages.find(
+      (item: ProductImage) => item.id === id
+    );
+
+    if (!image) {
+      return undefined;
+    }
+
+    return {
+      ...image,
+      url: resolveImageUrl(image.url),
+    };
   },
 
-  async getProductById(id: number): Promise<Product | undefined> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const product = mockApiResponse.content.find((item: Product) => item.id === id) as Product | undefined;
-        resolve(product);
-      }, 200);
-    });
+  /**
+   * Recherche un produit par identifiant.
+   */
+  async getProductById(
+    id: number
+  ): Promise<Product | undefined> {
+    const products = await this.getAllProducts(0, 1000);
+
+    return (
+      products.find((item: Product) => item.id === id) ??
+      normalizeProducts(mockApiResponse.content).find(
+        (item: Product) => item.id === id
+      )
+    );
   },
 
+  /**
+   * Retourne l'URL d'une image.
+   */
   async getImageContent(id: number): Promise<string> {
     const image = await this.getImageById(id);
-    const imageUrl = image?.url ?? '/api/images/not-found/content';
-    return imageUrl.startsWith('http') ? imageUrl : `${API_BASE_URL}${imageUrl}`;
+
+    return image?.url ?? '';
   },
 };
 

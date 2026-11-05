@@ -2,6 +2,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import type { Product } from '@/data/products.mock';
+import { resolveImageUrl } from '@/services/productService';
 
 type ProductCardProps = {
   product: Product;
@@ -11,7 +12,7 @@ type ProductCardProps = {
 export function ProductCard({ product, onPress }: ProductCardProps) {
   const firstImage = product.images[0]?.url ?? '';
   const price = `${product.price.toLocaleString('fr-FR')} FCFA`;
-  const imageSource = firstImage.startsWith('http') ? firstImage : `https://example.com${firstImage}`;
+  const imageSource = resolveImageUrl(firstImage);
 
   return (
     <Pressable

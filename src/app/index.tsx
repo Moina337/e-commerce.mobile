@@ -9,10 +9,10 @@ import { SearchIcon } from '@/components/home/search-icon';
 import { ProductSection } from '@/components/product';
 import { ScreenState } from '@/components/screen-state';
 import { BrandColors } from '@/constants/theme';
-import { useProduct } from '@/hooks/product';
+import { useHomeProducts } from '@/hooks/product';
 
 export default function HomeScreen() {
-  const { products, categories, isLoading, error, refetch } = useProduct();
+  const { products, categories, isLoading, error, refetch } = useHomeProducts();
 
   // On détermine que la page est vide s'il n'y a ni produits ni catégories
   const isPageEmpty = products.length === 0 && categories.length === 0;
