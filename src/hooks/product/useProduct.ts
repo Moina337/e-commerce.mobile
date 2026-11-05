@@ -103,14 +103,14 @@ export function useProduct({ productType = 'all' }: { productType?: 'all' | 'fea
     refetch: loadProducts,
   };
 }
-
-export function useProductById(productId?: number) {
+// recherge par slug 
+export function useProductBySlug(productSlug?: string) {
   const [product, setProduct] = useState<Product | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(Boolean(productId));
+  const [isLoading, setIsLoading] = useState(Boolean(productSlug));
   const [error, setError] = useState<string | null>(null);
 
   const loadProduct = useCallback(async () => {
-    if (!productId) {
+    if (!productSlug) {
       setProduct(undefined);
       setError(null);
       setIsLoading(false);
@@ -120,14 +120,14 @@ export function useProductById(productId?: number) {
     try {
       setIsLoading(true);
       setError(null);
-      const productData = await productService.getProductById(productId);
+      const productData = await productService.getProductBySlug(productSlug);
       setProduct(productData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Impossible de charger le produit.');
     } finally {
       setIsLoading(false);
     }
-  }, [productId]);
+  }, [productSlug]);
 
   useEffect(() => {
     void loadProduct();

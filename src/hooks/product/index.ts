@@ -1,1 +1,1 @@
-export { useAllProducts, useHomeProducts, useProduct, useProductById } from './useProduct';
+export { useAllProducts, useHomeProducts, useProduct, useProductBySlug } from './useProduct';

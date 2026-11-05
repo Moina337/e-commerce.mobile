@@ -1,4 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import type { Product } from '@/data/products.mock';
@@ -14,10 +15,22 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
   const price = `${product.price.toLocaleString('fr-FR')} FCFA`;
   const imageSource = resolveImageUrl(firstImage);
 
+  const handlePress = () => {
+    if (onPress) {
+      onPress(product);
+      return;
+    }
+
+    router.push({
+      pathname: '/product/[slug]',
+      params: { slug: product.slug },
+    });
+  };
+
   return (
     <Pressable
       accessibilityRole="button"
-      onPress={() => onPress?.(product)}
+      onPress={handlePress}
       style={styles.card}
     >
       <View style={styles.imageWrapper}>

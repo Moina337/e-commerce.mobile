@@ -156,19 +156,14 @@ export const productService = {
   },
 
   /**
-   * Recherche un produit par identifiant.
+   * Recherche un produit par slug
    */
-  async getProductById(
-    id: number
+  async getProductBySlug(
+    slug: string
   ): Promise<Product | undefined> {
-    const products = await this.getAllProducts(0, 1000);
+    const products = await this.getAllProducts();
 
-    return (
-      products.find((item: Product) => item.id === id) ??
-      normalizeProducts(mockApiResponse.content).find(
-        (item: Product) => item.id === id
-      )
-    );
+    return products.find((item: Product) => item.slug === slug);
   },
 
   /**
