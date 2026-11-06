@@ -1,8 +1,10 @@
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { useState, useEffect } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router, useLocalSearchParams } from 'expo-router';
 
+import { AddToCartButton } from '@/components/add-to-cart-button';
+import { CartTabIcon } from '@/components/cart/cart-tab-icon';
 import { ScreenState } from '@/components/screen-state';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import { useProductBySlug } from '@/hooks/product';
@@ -25,8 +27,25 @@ export default function ProductDetailScreen() {
   }, [product]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScreenState
+    <>
+      <Stack.Screen
+        options={{
+          title: product?.name ?? 'Produit',
+          headerBackTitle: 'Retour',
+          headerTitleStyle: {
+            fontFamily: BrandFonts.display,
+            fontSize: 20,
+            color: BrandColors.charcoal,
+          },
+          headerStyle: {
+            backgroundColor: BrandColors.stone,
+          },
+          headerTintColor: BrandColors.charcoal,
+        }}
+      />
+
+      <SafeAreaView style={styles.safeArea}>
+        <ScreenState
         isLoading={isLoading}
         error={error}
         isEmpty={!product}
@@ -42,9 +61,7 @@ export default function ProductDetailScreen() {
             contentContainerStyle={styles.container}
             showsVerticalScrollIndicator={false}
           >
-            <Pressable style={styles.backButton} onPress={() => router.back()}>
-              <Text style={styles.backText}>← Retour</Text>
-            </Pressable>
+          
 
             <View style={styles.galleryWrapper}>
               {/* 1. Affichage de la grande image principale sélectionnée */}
@@ -100,13 +117,12 @@ export default function ProductDetailScreen() {
               <Text style={styles.description}>{product.description}</Text>
             </View>
 
-            <Pressable style={styles.addToCartButton} accessibilityRole="button">
-              <Text style={styles.addToCartText}>Ajouter au panier</Text>
-            </Pressable>
+            <AddToCartButton product={product} />
           </ScrollView>
         ) : null}
-      </ScreenState>
-    </SafeAreaView>
+        </ScreenState>
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -120,21 +136,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 32,
     gap: 18,
-  },
-  backButton: {
-    alignSelf: 'flex-start',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 999,
-    backgroundColor: BrandColors.white,
-    borderWidth: 1,
-    borderColor: BrandColors.line,
-  },
-  backText: {
-    color: BrandColors.charcoal,
-    fontSize: 13,
-    fontWeight: '600',
-    fontFamily: BrandFonts.body,
   },
   galleryWrapper: {
     gap: 12,

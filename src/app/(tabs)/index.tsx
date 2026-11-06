@@ -39,13 +39,13 @@ export default function HomeScreen() {
             <Pressable
               style={styles.searchButton}
               accessibilityRole="button"
-              onPress={() => router.push('/explore')}
+              onPress={() => router.push('/(tabs)/boutique')}
             >
               <SearchIcon size={18} color={BrandColors.white} />
             </Pressable>
           </View>
 
-          <HeroBanner onPress={() => router.push('/explore')} />
+          <HeroBanner onPress={() => router.push('/(tabs)/boutique')} />
 
           <CategorySection categories={categories} />
 
