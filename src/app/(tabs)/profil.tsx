@@ -74,6 +74,14 @@ export default function ProfileScreen() {
 
             <Pressable
               accessibilityRole="button"
+              onPress={() => router.push('/commandes')}
+              style={styles.ordersButton}
+            >
+              <Text style={styles.ordersButtonText}>Mes commandes</Text>
+            </Pressable>
+
+            <Pressable
+              accessibilityRole="button"
               onPress={handleLogout}
               style={styles.logoutButton}
             >
@@ -165,12 +173,31 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: BrandColors.copper,
   },
+  ordersButton: {
+    backgroundColor: BrandColors.white,
+    borderWidth: 1,
+    borderColor: BrandColors.line,
+    borderRadius: 14,
+    paddingVertical: 14,
+    paddingHorizontal: 22,
+    marginTop: 8,
+    width: '100%',
+    alignItems: 'center',
+  },
+  ordersButtonText: {
+    color: BrandColors.charcoal,
+    fontFamily: BrandFonts.body,
+    fontSize: 15,
+    fontWeight: '700',
+  },
   logoutButton: {
     backgroundColor: BrandColors.charcoal,
     borderRadius: 14,
     paddingVertical: 14,
     paddingHorizontal: 22,
     marginTop: 16,
+    width: '100%',
+    alignItems: 'center',
   },
   logoutText: {
     color: BrandColors.white,
