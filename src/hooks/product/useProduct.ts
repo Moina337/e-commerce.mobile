@@ -27,7 +27,11 @@ export function useHomeProducts() {
   }, []);
 
   useEffect(() => {
-    void loadHomeProducts();
+    const timer = setTimeout(() => {
+      void loadHomeProducts();
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [loadHomeProducts]);
 
   return {

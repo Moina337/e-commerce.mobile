@@ -34,6 +34,9 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="auth" options={{ headerShown: false }} />
+        <Stack.Screen name="checkout" options={{ headerShown: true, headerRight: undefined }} />
+        <Stack.Screen name="commandes" options={{ headerShown: true, headerRight: undefined }} />
+        <Stack.Screen name="commandes/[id]" options={{ headerShown: true, headerRight: undefined }} />
         <Stack.Screen name="product/[slug]" options={{ headerShown: true, title: 'Détail' }} />
       </Stack>
     </ThemeProvider>
