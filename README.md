@@ -1,56 +1,200 @@
-# Welcome to your Expo app 👋
+# E-commerce Expo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Application mobile e-commerce construite avec Expo + React Native + Expo Router.
 
-## Get started
+Le projet couvre les parcours essentiels d’un magasin en ligne : visite de la boutique, affichage des produits, authentification, panier, checkout et suivi des commandes.
 
-1. Install dependencies
+## Fonctionnalités
 
-   ```bash
-   npm install
-   ```
+- Accueil et boutique
+- Liste des produits par catégorie
+- Détail d’un produit
+- Authentification (connexion / inscription)
+- Profil utilisateur
+- Panier avec gestion des quantités
+- Finalisation de commande
+- Suivi des commandes et détail d’une commande
+- État de loading / erreur / vide réutilisable pour les écrans
 
-2. Start the app
+## Stack technique
 
-   ```bash
-   npx expo start
-   ```
+- Expo SDK 58
+- React Native
+- Expo Router pour la navigation
+- TypeScript
+- Zustand pour l’état global
+- expo-secure-store pour la persistance du token
+- Requêtes HTTP via fetch et service dédié
 
-In the output, you'll find options to open the app in a
+## Prérequis
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js 18+ ou compatible avec Expo
+- npm ou Bun
+- Expo Go sur mobile, ou un émulateur Android / iOS
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Installation
 
-## Get a fresh project
-
-When you're ready, run:
+1. Clone le dépôt
 
 ```bash
-npm run reset-project
+git clone https://github.com/Moina337/e-commerce.mobile.git
+cd e-commerce.mobile
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+2. Installe les dépendances
 
-### Other setup steps
+```bash
+npm install
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Ou, si tu utilises Bun :
 
-## Learn more
+```bash
+bun install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Configure les variables d’environnement
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Copie le fichier d’exemple en fichier local :
 
-## Join the community
+```bash
+cp .env.example .env
+```
 
-Join our community of developers creating universal apps.
+Vérifie la valeur :
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```env
+EXPO_PUBLIC_API_URL=https://ecommerce-api-1eu4.onrender.com/api
+```
+
+## Lancer l’application
+
+Démarrer le serveur Expo :
+
+```bash
+npx expo start
+```
+
+Options utiles :
+
+```bash
+npx expo start --android
+npx expo start --ios
+npx expo start --web
+```
+
+## Scripts disponibles
+
+```bash
+npm run start
+npm run android
+npm run ios
+npm run web
+npx expo lint
+npx tsc --noEmit
+```
+
+## Structure du projet
+
+```text
+.
+├── app.json
+├── .env.example
+├── README.md
+├── package.json
+├── tsconfig.json
+├── assets/
+├── scripts/
+├── src/
+│   ├── app/                  # écrans et routes Expo Router
+│   ├── components/           # composants UI réutilisables
+│   ├── constants/            # palette, thème, polices
+│   ├── data/                 # données mockées / fixtures
+│   ├── hooks/                # hooks React
+│   ├── services/             # appels API / accès backend
+│   ├── store/                # Zustand stores (auth, panier)
+│   ├── types/                # types TypeScript
+│   ├── global.css            # styles globaux
+│   └── ...
+└──
+```
+
+## Architecture fonctionnelle
+
+### Routes principales
+
+- `src/app/(tabs)/index.tsx` : accueil
+- `src/app/(tabs)/boutique.tsx` : boutique
+- `src/app/(tabs)/cart.tsx` : panier
+- `src/app/(tabs)/profil.tsx` : profil utilisateur
+- `src/app/auth/login.tsx` : connexion
+- `src/app/auth/register.tsx` : inscription
+- `src/app/checkout.tsx` : validation de commande
+- `src/app/commandes/index.tsx` : liste des commandes
+- `src/app/commandes/[id].tsx` : détail d’une commande
+- `src/app/product/[slug].tsx` : détail d’un produit
+
+### Services et données
+
+- `src/services/api.ts` : utilitaire HTTP centralisé
+- `src/services/productService.ts` : gestion des produits et images
+- `src/services/orderService.ts` : gestion des commandes
+- `src/services/authService.ts` : gestion auth API
+- `src/store/authStore.ts` : session utilisateur
+- `src/store/cartStore.ts` : panier global
+
+## API et intégration
+
+Le projet utilise une API exposée via la variable `EXPO_PUBLIC_API_URL`.
+
+Les services utilisent des endpoints pour :
+- les catégories et produits
+- l’authentification
+- les commandes
+
+En cas d’erreur backend ou de réseau, l’application affiche des états lisibles via `ScreenState` et remonte des messages explicites à l’utilisateur.
+
+## Qualité de code
+
+Le projet est configuré pour :
+
+- TypeScript strict au travers de la pile Expo / React Native
+- ESLint via Expo
+- composants organisés par responsabilité
+- navigation via file-based routing
+
+Commandes de validation :
+
+```bash
+npx expo lint
+npx tsc --noEmit
+```
+
+## Développement recommandé
+
+- Conserver les écrans dans `src/app/`
+- Conserver les composants réutilisables dans `src/components/`
+- Ne pas mettre la logique de navigation dans les composants UI
+- Gérer les fonctions API via les services dans `src/services/`
+- Préférer Zustand pour l’état global et les stores dédiés
+
+## Notes
+
+- Le projet est pensé pour une expérience mobile-first.
+- La navigation suit le modèle Expo Router.
+- L’application est compatible avec les plateformes prises en charge par Expo.
+
+## Licence
+
+Ce projet est sous licence MIT ou conforme à la licence associée au dépôt.
+
+## Contact / contribution
+
+Pour contribuer ou poser une question :
+
+- ouvrir une issue sur le dépôt GitHub
+- ou proposer une branche avec des changements bien découpés par fonctionnalité
+
+---
+
+Projet développé avec Expo, React Native et Expo Router.
