@@ -19,9 +19,10 @@ export default function AppTabs() {
         },
 
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
+          backgroundColor: BrandColors.stone,
           borderTopWidth: 0,
           elevation: 0,
+          shadowOpacity: 0,
         },
       }}
     >
@@ -33,7 +34,7 @@ export default function AppTabs() {
             <Ionicons
               name={focused ? 'home' : 'home-outline'}
               size={size}
-              color="transparent"
+              color={focused ? BrandColors.copper : BrandColors.charcoal}
             />
           ),
         }}
@@ -47,7 +48,7 @@ export default function AppTabs() {
             <Ionicons
               name={focused ? 'bag-handle' : 'bag-handle-outline'}
               size={size}
-              color="transparent"
+              color={focused ? BrandColors.copper : BrandColors.charcoal}
             />
           ),
         }}
@@ -61,7 +62,7 @@ export default function AppTabs() {
             <Ionicons
               name={focused ? 'person' : 'person-outline'}
               size={size}
-              color="transparent"
+              color={focused ? BrandColors.copper : BrandColors.charcoal}
             />
           ),
         }}

@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import { resolveImageUrl } from '@/services/productService';
+import { useAuthStore } from '@/store/authStore';
 import { useCartStore } from '@/store/cartStore';
 
 export default function CartScreen() {
@@ -13,9 +14,20 @@ export default function CartScreen() {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const clearCart = useCartStore((state) => state.clearCart);
+  const token = useAuthStore((state) => state.token);
 
   const shippingFee = cartItems.length > 0 ? 2500 : 0;
   const grandTotal = totalPrice + shippingFee;
+  const isCheckoutDisabled = cartItems.length === 0;
+
+  const handleCheckout = () => {
+    if (!token) {
+      router.push('/auth/login');
+      return;
+    }
+
+    router.push('/checkout');
+  };
 
   return (
     <>
@@ -115,8 +127,17 @@ export default function CartScreen() {
               <Text style={styles.totalValue}>{grandTotal.toLocaleString('fr-FR')} FCFA</Text>
             </View>
 
-            <Pressable style={styles.confirmButton} accessibilityRole="button">
-              <Text style={styles.confirmText}>Confirmer la commande</Text>
+            <Pressable
+              style={({ pressed }) => [
+                styles.confirmButton,
+                isCheckoutDisabled && styles.confirmButtonDisabled,
+                pressed && !isCheckoutDisabled && styles.confirmButtonPressed,
+              ]}
+              accessibilityRole="button"
+              disabled={isCheckoutDisabled}
+              onPress={handleCheckout}
+            >
+              <Text style={styles.confirmText}>Commander</Text>
             </Pressable>
 
             <Pressable style={styles.clearButton} accessibilityRole="button" onPress={clearCart}>
@@ -290,6 +311,12 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  confirmButtonDisabled: {
+    opacity: 0.5,
+  },
+  confirmButtonPressed: {
+    opacity: 0.9,
   },
   confirmText: {
     color: BrandColors.white,
