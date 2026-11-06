@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ProductCard } from '@/components/product';
@@ -14,24 +14,31 @@ export default function ExploreScreen() {
       <ScreenState
         isLoading={isLoading}
         error={error}
+        isEmpty={products.length === 0}
         loadingText="Chargement de la boutique..."
         errorText="Impossible de charger les produits."
+        emptyText="Aucun produit pour le moment."
         onRetry={() => {
           void refetch();
         }}
       >
-        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Boutique</Text>
-            <Text style={styles.subtitle}>{products.length} produits</Text>
-          </View>
-
-          <View style={styles.grid}>
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </View>
-        </ScrollView>
+        <FlatList
+          data={products}
+          // keyExtractor attend un texte : l'id de l'API est un nombre
+          keyExtractor={(product) => String(product.id)}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+          contentContainerStyle={styles.container}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <View style={styles.header}>
+              <Text style={styles.title}>Boutique</Text>
+              {/* Nombre de produits chargés, pas le total du catalogue (l'API est paginée) */}
+              <Text style={styles.subtitle}>{products.length} produits</Text>
+            </View>
+          }
+          renderItem={({ item }) => <ProductCard product={item} />}
+        />
       </ScreenState>
     </SafeAreaView>
   );
@@ -46,26 +53,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 12,
     paddingBottom: 36,
-    gap: 18,
   },
   header: {
     gap: 4,
+    marginBottom: 18,
   },
+  // Les deux cartes d'une rangée : une à chaque bord, l'espace au milieu.
+  // L'espace vertical entre les rangées vient du marginBottom de ProductCard.
+  row: {
+    justifyContent: 'space-between',
+  },
+  // Pas de fontWeight avec une police personnalisée :
+  // utilise une version grasse de BrandFonts si elle existe.
   title: {
     color: BrandColors.charcoal,
     fontSize: 30,
-    fontWeight: '800',
     fontFamily: BrandFonts.display,
   },
   subtitle: {
     color: BrandColors.slate,
     fontSize: 14,
     fontFamily: BrandFonts.body,
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    gap: 12,
   },
 });

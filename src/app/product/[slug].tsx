@@ -1,10 +1,9 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AddToCartButton } from '@/components/add-to-cart-button';
-import { CartTabIcon } from '@/components/cart/cart-tab-icon';
 import { ScreenState } from '@/components/screen-state';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import { useProductBySlug } from '@/hooks/product';
@@ -16,15 +15,11 @@ export default function ProductDetailScreen() {
   const { product, isLoading, error, refetch } = useProductBySlug(productSlug);
   const galleryImages = product?.images?.length ? product.images : [];
 
-  // State pour suivre l'image actuellement affichée en grand
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
-  // Synchroniser l'image principale lorsque le produit finit de charger
-  useEffect(() => {
-    if (galleryImages.length > 0) {
-      setSelectedImage(galleryImages[0].url);
-    }
-  }, [product]);
+  const activeImage =
+    selectedImage && galleryImages.some((image) => image.url === selectedImage)
+      ? selectedImage
+      : galleryImages[0]?.url ?? null;
 
   return (
     <>
@@ -65,9 +60,9 @@ export default function ProductDetailScreen() {
 
             <View style={styles.galleryWrapper}>
               {/* 1. Affichage de la grande image principale sélectionnée */}
-              {galleryImages.length > 0 && selectedImage ? (
+              {galleryImages.length > 0 && activeImage ? (
                 <Image
-                  source={{ uri: resolveImageUrl(selectedImage) }}
+                  source={{ uri: resolveImageUrl(activeImage) }}
                   style={styles.mainImage}
                   resizeMode="cover"
                 />
@@ -85,7 +80,7 @@ export default function ProductDetailScreen() {
                   contentContainerStyle={styles.thumbnailList}
                 >
                   {galleryImages.map((image) => {
-                    const isSelected = selectedImage === image.url;
+                    const isSelected = activeImage === image.url;
                     return (
                       <Pressable
                         key={image.id}
