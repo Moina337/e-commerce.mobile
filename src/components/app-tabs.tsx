@@ -1,39 +1,81 @@
-import { NativeTabs } from 'expo-router/native-tabs';
-import { useColorScheme } from 'react-native';
+
+import { Tabs } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 import { CartTabIcon } from '@/components/cart/cart-tab-icon';
-import { Colors } from '@/constants/theme';
+import { BrandColors } from '@/constants/theme';
 
 export default function AppTabs() {
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === 'dark' ? 'dark' : 'light'];
-
   return (
-    <NativeTabs
-      backgroundColor={colors.background}
-      indicatorColor={colors.backgroundElement}
-      labelStyle={{ selected: { color: colors.text } }}
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: BrandColors.copper,
+        tabBarInactiveTintColor: BrandColors.charcoal,
+
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '600',
+        },
+
+        tabBarStyle: {
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 0,
+          elevation: 0,
+        },
+      }}
     >
-      <NativeTabs.Trigger name="index">
-        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/home.png')}
-          renderingMode="template"
-        />
-      </NativeTabs.Trigger>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Accueil',
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'home' : 'home-outline'}
+              size={size}
+              color="transparent"
+            />
+          ),
+        }}
+      />
 
-      <NativeTabs.Trigger name="boutique">
-        <NativeTabs.Trigger.Label>Boutique</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/explore.png')}
-          renderingMode="template"
-        />
-      </NativeTabs.Trigger>
+      <Tabs.Screen
+        name="boutique"
+        options={{
+          title: 'Boutique',
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'bag-handle' : 'bag-handle-outline'}
+              size={size}
+              color="transparent"
+            />
+          ),
+        }}
+      />
 
-      <NativeTabs.Trigger name="cart">
-        <NativeTabs.Trigger.Label>Panier</NativeTabs.Trigger.Label>
-        <CartTabIcon />
-      </NativeTabs.Trigger>
-    </NativeTabs>
+      <Tabs.Screen
+        name="profil"
+        options={{
+          title: 'Profil',
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'person' : 'person-outline'}
+              size={size}
+              color="transparent"
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="cart"
+        options={{
+          title: 'Panier',
+          tabBarIcon: ({ focused }) => (
+            <CartTabIcon focused={focused} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
