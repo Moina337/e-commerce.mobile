@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
+import { Button } from '@/components/button/button';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 
 type ScreenStateProps = {
@@ -43,9 +44,7 @@ export function ScreenState({
           <Text style={styles.errorMessage}>{error}</Text>
         )}
         {onRetry && (
-          <Pressable style={styles.retryButton} onPress={onRetry} accessibilityRole="button">
-            <Text style={styles.retryText}>Réessayer</Text>
-          </Pressable>
+          <Button title="Réessayer" onPress={onRetry} style={styles.retryButton} />
         )}
       </View>
     );
@@ -91,15 +90,5 @@ const styles = StyleSheet.create({
   },
   retryButton: {
     marginTop: 4,
-    backgroundColor: BrandColors.copper,
-    borderRadius: 10,
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-  },
-  retryText: {
-    color: BrandColors.white,
-    fontSize: 13,
-    fontWeight: '700',
-    fontFamily: BrandFonts.body,
   },
 });

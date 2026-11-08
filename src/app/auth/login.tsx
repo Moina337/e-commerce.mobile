@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Button } from '@/components/button/button';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import { useAuthStore } from '@/store/authStore';
 
@@ -140,28 +141,19 @@ export default function LoginScreen() {
 
             {displayError ? <Text style={styles.errorText}>{displayError}</Text> : null}
 
-            <Pressable
-              accessibilityRole="button"
+            <Button
+              title={isSubmitting ? 'Chargement...' : 'Se connecter'}
               onPress={handleSubmit}
               disabled={submitDisabled}
-              style={({ pressed }) => [
-                styles.submitButton,
-                submitDisabled && styles.submitButtonDisabled,
-                pressed && !submitDisabled && styles.submitButtonPressed,
-              ]}
-            >
-              <Text style={styles.submitButtonText}>
-                {isSubmitting ? 'Chargement...' : 'Se connecter'}
-              </Text>
-            </Pressable>
+              style={styles.submitButton}
+            />
 
-            <Pressable
-              accessibilityRole="button"
+            <Button
+              title="Je n'ai pas de compte"
+              variant="ghost"
               onPress={() => router.push('/auth/register')}
               style={styles.secondaryButton}
-            >
-              <Text style={styles.secondaryButtonText}>{"Je n'ai pas de compte"}</Text>
-            </Pressable>
+            />
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -227,33 +219,10 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: 8,
-    backgroundColor: BrandColors.charcoal,
-    borderRadius: 14,
-    paddingVertical: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  submitButtonPressed: {
-    opacity: 0.9,
-  },
-  submitButtonDisabled: {
-    opacity: 0.5,
-  },
-  submitButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: BrandFonts.display,
-    fontWeight: '700',
+    alignSelf: 'stretch',
   },
   secondaryButton: {
     marginTop: 16,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  secondaryButtonText: {
-    color: BrandColors.charcoal,
-    fontSize: 14,
-    fontFamily: BrandFonts.body,
-    fontWeight: '600',
+    alignSelf: 'stretch',
   },
 });

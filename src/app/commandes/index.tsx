@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Button } from '@/components/button/button';
 import { ScreenState } from '@/components/screen-state';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import { getMyOrders } from '@/services/orderService';
@@ -42,13 +43,12 @@ function EmptyOrdersState() {
     <View style={styles.emptyState}>
       <Text style={styles.emptyTitle}>Aucune commande pour le moment</Text>
       <Text style={styles.emptyText}>Commencez votre shopping pour voir vos commandes ici.</Text>
-      <Pressable
-        accessibilityRole="button"
+      <Button
+        title="Découvrir la boutique"
+        variant="primary"
         onPress={() => router.push('/(tabs)')}
         style={styles.emptyButton}
-      >
-        <Text style={styles.emptyButtonText}>Découvrir la boutique</Text>
-      </Pressable>
+      />
     </View>
   );
 }
@@ -257,15 +257,6 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   emptyButton: {
-    backgroundColor: BrandColors.charcoal,
-    borderRadius: 12,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-  },
-  emptyButtonText: {
-    color: BrandColors.white,
-    fontFamily: BrandFonts.body,
-    fontWeight: '700',
-    fontSize: 14,
+    alignSelf: 'center',
   },
 });

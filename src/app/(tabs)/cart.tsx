@@ -2,6 +2,7 @@ import { Stack, router } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Button } from '@/components/button/button';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import { resolveImageUrl } from '@/services/productService';
 import { useAuthStore } from '@/store/authStore';
@@ -52,13 +53,12 @@ export default function CartScreen() {
         <View style={styles.emptyState}>
           <Text style={styles.emptyTitle}>Votre panier est vide</Text>
           <Text style={styles.emptyText}>Ajoutez des articles pour commencer votre commande.</Text>
-          <Pressable
-            style={styles.emptyButton}
-            accessibilityRole="button"
+          <Button
+            title="Retour à la boutique"
+            variant="primary"
             onPress={() => router.push('/(tabs)')}
-          >
-            <Text style={styles.emptyButtonText}>Retour à la boutique</Text>
-          </Pressable>
+            style={styles.emptyButton}
+          />
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
@@ -127,22 +127,19 @@ export default function CartScreen() {
               <Text style={styles.totalValue}>{grandTotal.toLocaleString('fr-FR')} FCFA</Text>
             </View>
 
-            <Pressable
-              style={({ pressed }) => [
-                styles.confirmButton,
-                isCheckoutDisabled && styles.confirmButtonDisabled,
-                pressed && !isCheckoutDisabled && styles.confirmButtonPressed,
-              ]}
-              accessibilityRole="button"
-              disabled={isCheckoutDisabled}
+            <Button
+              title="Commander"
               onPress={handleCheckout}
-            >
-              <Text style={styles.confirmText}>Commander</Text>
-            </Pressable>
+              disabled={isCheckoutDisabled}
+              style={styles.confirmButton}
+            />
 
-            <Pressable style={styles.clearButton} accessibilityRole="button" onPress={clearCart}>
-              <Text style={styles.clearText}>Vider le panier</Text>
-            </Pressable>
+            <Button
+              title="Vider le panier"
+              variant="ghost"
+              onPress={clearCart}
+              style={styles.clearButton}
+            />
           </View>
         </ScrollView>
         )}
@@ -176,16 +173,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   emptyButton: {
-    backgroundColor: BrandColors.charcoal,
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 12,
-  },
-  emptyButtonText: {
-    color: BrandColors.white,
-    fontSize: 14,
-    fontWeight: '700',
-    fontFamily: BrandFonts.body,
+    alignSelf: 'center',
   },
   container: {
     paddingHorizontal: 20,
@@ -306,31 +294,9 @@ const styles = StyleSheet.create({
     fontFamily: BrandFonts.display,
   },
   confirmButton: {
-    backgroundColor: BrandColors.charcoal,
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  confirmButtonDisabled: {
-    opacity: 0.5,
-  },
-  confirmButtonPressed: {
-    opacity: 0.9,
-  },
-  confirmText: {
-    color: BrandColors.white,
-    fontSize: 15,
-    fontWeight: '700',
-    fontFamily: BrandFonts.body,
+    alignSelf: 'stretch',
   },
   clearButton: {
-    paddingVertical: 6,
-    alignItems: 'center',
-  },
-  clearText: {
-    color: BrandColors.slate,
-    fontSize: 13,
-    fontFamily: BrandFonts.body,
+    alignSelf: 'stretch',
   },
 });

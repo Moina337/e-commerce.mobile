@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Button } from '@/components/button/button';
 import { ScreenState } from '@/components/screen-state';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import { ApiError } from '@/services/api';
@@ -158,20 +159,17 @@ export default function OrderDetailScreen() {
                 <View style={styles.successBanner}>
                   <Text style={styles.successTitle}>Commande enregistrée</Text>
                   <View style={styles.successActions}>
-                    <Pressable
-                      accessibilityRole="button"
+                    <Button
+                      title="Continuer mes achats"
                       onPress={() => router.replace('/(tabs)')}
                       style={styles.primaryButton}
-                    >
-                      <Text style={styles.primaryButtonText}>Continuer mes achats</Text>
-                    </Pressable>
-                    <Pressable
-                      accessibilityRole="button"
+                    />
+                    <Button
+                      title="Voir mes commandes"
+                      variant="ghost"
                       onPress={() => router.push('/commandes')}
                       style={styles.secondaryButton}
-                    >
-                      <Text style={styles.secondaryButtonText}>Voir mes commandes</Text>
-                    </Pressable>
+                    />
                   </View>
                 </View>
               ) : null}
@@ -224,18 +222,13 @@ export default function OrderDetailScreen() {
               </View>
 
               {order.status === 'PENDING' ? (
-                <Pressable
-                  accessibilityRole="button"
+                <Button
+                  title={isCanceling ? 'Annulation...' : 'Annuler la commande'}
+                  variant="ghost"
                   onPress={handleCancel}
                   disabled={isCanceling}
-                  style={({ pressed }) => [
-                    styles.cancelButton,
-                    pressed && !isCanceling && styles.cancelButtonPressed,
-                    isCanceling && styles.cancelButtonDisabled,
-                  ]}
-                >
-                  <Text style={styles.cancelButtonText}>{isCanceling ? 'Annulation...' : 'Annuler la commande'}</Text>
-                </Pressable>
+                  style={styles.cancelButton}
+                />
               ) : null}
             </ScrollView>
           ) : null}
@@ -273,28 +266,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   primaryButton: {
-    backgroundColor: BrandColors.charcoal,
-    borderRadius: 12,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  primaryButtonText: {
-    color: BrandColors.white,
-    fontFamily: BrandFonts.body,
-    fontWeight: '700',
-    fontSize: 14,
+    alignSelf: 'stretch',
   },
   secondaryButton: {
-    backgroundColor: BrandColors.stone,
-    borderRadius: 12,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  secondaryButtonText: {
-    color: BrandColors.charcoal,
-    fontFamily: BrandFonts.body,
-    fontWeight: '700',
-    fontSize: 14,
+    alignSelf: 'stretch',
   },
   headerCard: {
     backgroundColor: BrandColors.white,
@@ -391,23 +366,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
   },
   cancelButton: {
-    backgroundColor: BrandColors.white,
-    borderWidth: 1,
-    borderColor: BrandColors.line,
-    borderRadius: 14,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  cancelButtonPressed: {
-    opacity: 0.85,
-  },
-  cancelButtonDisabled: {
-    opacity: 0.6,
-  },
-  cancelButtonText: {
-    color: BrandColors.charcoal,
-    fontFamily: BrandFonts.body,
-    fontSize: 14,
-    fontWeight: '700',
+    alignSelf: 'stretch',
   },
 });

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Button } from '@/components/button/button';
 import { ApiError } from '@/services/api';
 import { createOrder } from '@/services/orderService';
 import { resolveImageUrl } from '@/services/productService';
@@ -129,30 +130,21 @@ export default function CheckoutScreen() {
 
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-          <Pressable
-            accessibilityRole="button"
+          <Button
+            title={isSubmitting ? 'Confirmation...' : 'Confirmer la commande'}
             onPress={() => {
               void handleCheckout();
             }}
             disabled={isSubmitting || cartItems.length === 0}
-            style={({ pressed }) => [
-              styles.confirmButton,
-              (isSubmitting || cartItems.length === 0) && styles.confirmButtonDisabled,
-              pressed && !isSubmitting && cartItems.length > 0 && styles.confirmButtonPressed,
-            ]}
-          >
-            <Text style={styles.confirmButtonText}>
-              {isSubmitting ? 'Confirmation...' : 'Confirmer la commande'}
-            </Text>
-          </Pressable>
+            style={styles.confirmButton}
+          />
 
-          <Pressable
-            accessibilityRole="button"
+          <Button
+            title="Retour au panier"
+            variant="ghost"
             onPress={() => router.back()}
             style={styles.backButton}
-          >
-            <Text style={styles.backButtonText}>Retour au panier</Text>
-          </Pressable>
+          />
         </ScrollView>
       </SafeAreaView>
     </>
@@ -230,38 +222,10 @@ const styles = StyleSheet.create({
     fontFamily: BrandFonts.body,
   },
   confirmButton: {
-    backgroundColor: BrandColors.charcoal,
-    borderRadius: 14,
-    paddingVertical: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  confirmButtonDisabled: {
-    opacity: 0.5,
-  },
-  confirmButtonPressed: {
-    opacity: 0.9,
-  },
-  confirmButtonText: {
-    color: BrandColors.white,
-    fontSize: 15,
-    fontFamily: BrandFonts.body,
-    fontWeight: '700',
+    alignSelf: 'stretch',
   },
   backButton: {
-    backgroundColor: BrandColors.white,
-    borderWidth: 1,
-    borderColor: BrandColors.line,
-    borderRadius: 14,
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backButtonText: {
-    color: BrandColors.charcoal,
-    fontSize: 14,
-    fontFamily: BrandFonts.body,
-    fontWeight: '700',
+    alignSelf: 'stretch',
   },
   errorText: {
     color: BrandColors.copper,

@@ -2,6 +2,7 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Button } from '@/components/button/button';
 import { ScreenState } from '@/components/screen-state';
 import { BrandColors, BrandFonts } from '@/constants/theme';
 import { useAuthStore } from '@/store/authStore';
@@ -46,13 +47,11 @@ export default function ProfileScreen() {
             <Text style={styles.emptyText}>
               Connectez-vous pour consulter vos informations et gérer votre compte.
             </Text>
-            <Pressable
-              accessibilityRole="button"
+            <Button
+              title="Se connecter"
               onPress={() => router.push('/auth/login' as any)}
               style={styles.actionButton}
-            >
-              <Text style={styles.actionButtonText}>Se connecter</Text>
-            </Pressable>
+            />
           </View>
         ) : (
           <View style={styles.profileCard}>
@@ -72,21 +71,19 @@ export default function ProfileScreen() {
 
             {user.role === 'ADMIN' ? <Text style={styles.roleBadge}>ADMIN</Text> : null}
 
-            <Pressable
-              accessibilityRole="button"
+            <Button
+              title="Mes commandes"
+              variant="ghost"
               onPress={() => router.push('/commandes')}
               style={styles.ordersButton}
-            >
-              <Text style={styles.ordersButtonText}>Mes commandes</Text>
-            </Pressable>
+            />
 
-            <Pressable
-              accessibilityRole="button"
+            <Button
+              title="Se déconnecter"
+              variant="secondary"
               onPress={handleLogout}
               style={styles.logoutButton}
-            >
-              <Text style={styles.logoutText}>Se déconnecter</Text>
-            </Pressable>
+            />
           </View>
         )}
       </ScreenState>
@@ -119,17 +116,8 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   actionButton: {
-    backgroundColor: BrandColors.charcoal,
-    borderRadius: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 22,
     marginTop: 8,
-  },
-  actionButtonText: {
-    color: BrandColors.white,
-    fontFamily: BrandFonts.body,
-    fontSize: 15,
-    fontWeight: '700',
+    alignSelf: 'stretch',
   },
   profileCard: {
     flex: 1,
@@ -174,35 +162,11 @@ const styles = StyleSheet.create({
     color: BrandColors.copper,
   },
   ordersButton: {
-    backgroundColor: BrandColors.white,
-    borderWidth: 1,
-    borderColor: BrandColors.line,
-    borderRadius: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 22,
     marginTop: 8,
-    width: '100%',
-    alignItems: 'center',
-  },
-  ordersButtonText: {
-    color: BrandColors.charcoal,
-    fontFamily: BrandFonts.body,
-    fontSize: 15,
-    fontWeight: '700',
+    alignSelf: 'stretch',
   },
   logoutButton: {
-    backgroundColor: BrandColors.charcoal,
-    borderRadius: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 22,
     marginTop: 16,
-    width: '100%',
-    alignItems: 'center',
-  },
-  logoutText: {
-    color: BrandColors.white,
-    fontFamily: BrandFonts.body,
-    fontSize: 15,
-    fontWeight: '700',
+    alignSelf: 'stretch',
   },
 });

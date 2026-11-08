@@ -40,35 +40,37 @@ export function Button({
       ]}
       {...props}
     >
-      <Text style={[styles.label, textColors[variant], disabled && styles.disabledLabel]}>{title}</Text>
+      <Text style={[styles.label, textColors[variant], disabled && styles.disabledLabel]}>
+        {title}
+      </Text>
     </Pressable>
   );
 }
 
 const textColors = {
-  primary: { color: BrandColors.charcoal },
+  primary: { color: BrandColors.white },
   secondary: { color: BrandColors.white },
-  ghost: { color: BrandColors.charcoal },
+  ghost: { color: BrandColors.copper },
 } as const;
 
 const styles = StyleSheet.create({
   base: {
     alignSelf: 'flex-start',
     borderRadius: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingVertical: 11,
     borderWidth: 1,
     borderColor: 'transparent',
   },
   primary: {
-    backgroundColor: BrandColors.sand,
+    backgroundColor: BrandColors.copper,
   },
   secondary: {
-    backgroundColor: BrandColors.charcoal,
+    backgroundColor: BrandColors.copper,
   },
   ghost: {
     backgroundColor: 'transparent',
-    borderColor: BrandColors.line,
+    borderColor: BrandColors.copper,
   },
   fullWidth: {
     alignSelf: 'stretch',
@@ -80,12 +82,13 @@ const styles = StyleSheet.create({
     color: BrandColors.slate,
   },
   pressed: {
-    opacity: 0.7,
+    opacity: 0.8,
   },
   label: {
     fontWeight: '700',
     fontSize: 13,
     fontFamily: BrandFonts.display,
     textAlign: 'center',
+    letterSpacing: 0.6,
   },
 });
